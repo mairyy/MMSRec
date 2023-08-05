@@ -1,0 +1,1 @@
+Title: Radica 20Q Artificial Intelligence Game - Colors may vary since the item may come in 3 different colors ; Description: #review { width: 100%; font-family: Verdana, Helvetica neue, Arial, serif; font-size: 12px; } .caption { font-family: Verdana, Helvetica neue, Arial, serif; font-size: 10px; font-weight: bold; font-style: italic; } ; 

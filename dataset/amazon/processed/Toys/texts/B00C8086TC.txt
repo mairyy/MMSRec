@@ -1,0 +1,10 @@
+Title: Cinque Terre Board Game ; Description: The Cinque Terre is a rugged, coastal section on the Italian Riviera and is composed
+of five villages. The villages are known for their beauty, culture, food, and proximity
+to one another. Produce carts are commonly found in each village marketplace. In this
+game of strategy, players compete to sell the most valuable produce in the five villages.
+Players act as farmers and operate carts in which they will harvest produce and deliver
+them to the five villages to sell. Additionally, players will compete for Produce Order
+cards, which reward Lire for selling desirable produce in specific villages.
+Players track sold produce in each village using their Fulfillment Cards.
+The winner is the player who gains the most Lire by selling valuable produce,
+gaining popularity in the villages and fulfilling Produce Orders. ; 

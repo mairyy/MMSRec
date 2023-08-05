@@ -1,0 +1,21 @@
+Title: Syma 16.5Cm S026G 3.5Ch 3 Channel Mini Chinook Rc Helicopter Gyro Small Toy Gift Army-Green ; Description: .suggest_link, .promo_cat, .promo_title {
+  font-family: arial, sans-serif;
+}
+
+#sugdivhdr, #sugdivhdr2 {
+  color: #888;
+  font-size: 10px;
+  line-height: 12px;
+  padding-right: 4px;
+  text-align: right;
+}
+
+
+
+
+.pphClickable {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.pphWidgetTitle { ; 

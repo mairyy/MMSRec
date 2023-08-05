@@ -1,0 +1,8 @@
+Title: Syma S107 / S107G Upgrade 3.7V Lithium Polymer 240 mah Battery for Remote Control Helicopter Helizone RC Firebird ; Description: Replacement & Upgrade battery for the popular Syma S107 and Syma S107G helicopter.  Battery provides longer flight time by up to 3 to 6 minutes.  Capacity at 240 mah compared to the standard 150 mah, 33% more capacity!
+
+Battery Replacement Instructions:
+1.	Remove canopy from Helicopter by removing screws on each side of the canopy
+2.	Cut off red and wire of the installed battery, but leave extra length for splicing.
+3.	Connect and solder (or twist tips together) the new battery to the wires, connecting red with red and black with black.
+4.	Wrap wires with tape
+5.	Put battery in original position and push it towards the back or at an angle.  Fitting might be tight. Check the balance/center of gravity of helicopter. ; 

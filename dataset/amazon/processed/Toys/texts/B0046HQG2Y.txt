@@ -1,0 +1,9 @@
+Title: Tenergy 3.7V 500mAh 15C LiPo Battery for E-Flite Blade 120SR RC Helicopters ; Description: Tenergy 3.7V 500mAh LiPo Battery for E-Flite Blade 120SR RC Helicopters
+
+Description:
+
+    * Voltage:3.7V
+    * High 15C rating
+    * Capicity: 500mah
+    * Dimensions: 58mm x 21mm x 8mm
+    * Weight&#xFF1A;12g ; 

@@ -1,0 +1,1 @@
+Title: Fluxx 4.0 ; Description: A card game where the cards themselves determine the current rules of the game. By playing cards, you change numerous aspects of the game: how to draw cards, how to play cards, and even how to win. There are many editions, themed siblings, and promo cards available. ; 

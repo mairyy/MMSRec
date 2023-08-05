@@ -1,0 +1,1 @@
+Title: Laser Maze Logic Game ; Description: Laser Maze by ThinkFun is the first single-player logic game to feature a real laser. Players reflect and split the laser beam using mirrors and targets on a puzzle grid to reach their goal. Laser Maze features 60 challenges from Beginner to Expert and eleven cool tokens to direct the path of the laser beam. ; 

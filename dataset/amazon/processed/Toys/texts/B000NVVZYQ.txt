@@ -1,0 +1,1 @@
+Title: Fisher-Price Sesame Street Singing Pizza Elmo ; Description: #review { width: 100%; font-family: Verdana, Helvetica neue, Arial, serif; font-size: 13px; } .caption { font-family: Verdana, Helvetica neue, Arial, serif; font-size: 10px; font-weight: bold; font-style: italic; } ; 

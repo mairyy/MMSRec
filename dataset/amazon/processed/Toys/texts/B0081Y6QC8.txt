@@ -1,0 +1,11 @@
+Title: Bluecell 1-8 Cell Lipo Digital Battery Voltage Checker with Warning Alarm + 2-6 cell Lipo Digital Battery Voltage Checker ; Description: 1-8 cell battery checker:
+Voltage Detection Precision: +/- 0.01V.
+Unit Voltage Display Range: 0.50-4.5V.
+Total Voltage Display Range: 0.50-36V.
+1S Test Mode Voltage Range: 3.7-30V.
+Low Voltage Buzzer Alarm Mode for 1-8S.
+Alarm set value range: OFF~2.7~3.8V
+
+2-6 cell batteries checker:
+Quantity: 1 x Digital Voltage Checker,
+Dimension: 1.9 x 0.75 x 0.3 inch. ; 

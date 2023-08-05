@@ -1,0 +1,1 @@
+Title: Thinkfun Daily Puzzle ; Description: Have a new puzzle each day with the Daily Puzzle.  Flip, stack and rotate the 10 puzzle tiles to create today&#x2019;s date.  The top row of tiles creates the month and the bottom row creates the day.  It&#x2019;s 365 puzzles in one and works year after year. ; 
