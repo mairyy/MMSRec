@@ -7,8 +7,9 @@ from metric.predict_metric import PredictMetric
 def _calc_HitRatio(score, seq_lists, topk=10):
     num_seq = seq_lists.shape[0]
     hr = 0
+    score = score[:topk]
     for i in range(num_seq):
-        if seq_lists[i] in score[:topk]:
+        if len(seq_lists[i] & score):
             hr += 1
     return hr
 
