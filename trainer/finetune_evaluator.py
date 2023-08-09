@@ -5,9 +5,12 @@ from utils.basic_utils import Logger
 from metric.predict_metric import PredictMetric
 
 def _calc_HitRatio(score, seq_lists, topk=10):
-    num_seq = score.shape[0]
-    id_score = map()
-    pred_indx = torch.argmax(score)
+    num_seq = seq_lists.shape[0]
+    hr = 0
+    for i in range(num_seq):
+        if seq_lists[i] in score[:topk]:
+            hr += 1
+    return hr
 
 def _calc_Recall(sort_lists, batch_size, topk=10):
     Recall_result = torch.sum(sort_lists < topk) / batch_size
@@ -65,18 +68,18 @@ class Evaluator(object):
 
         for step, data in tqdm(enumerate(self.eval_dataloader)):
             input_ids = data.to(self.device)
-            print("len", input_ids.shape[0], "input", input_ids)
+            # print("len", input_ids.shape[0], "input", input_ids)
             pred, label = self.fusion_model(input_ids, mode="pred")
-            print("len", pred.shape[0], "pred", pred)
-            print("len", label.shape[0], "label", label)
-            sort_index, batch = self.metric(pred, label)
-            print("len", sort_index.shape[0], "sort idx", sort_index)
-            print("batch", batch)
+            # print("len", pred.shape[0], "pred", pred)
+            # print("len", label.shape[0], "label", label)
+            pred_sort, sort_index, batch = self.metric(pred, label, input_ids)
+            # print("len", sort_index.shape[0], "sort idx", sort_index)
+            # print("batch", batch)
             sort_lists.append(sort_index)
             batch_size += batch
-            HR[0] += _calc_HR(sort_index, input_ids, 5)
-            HR[1] += _calc_HR(sort_index, input_ids, 10)
-            HR[2] += _calc_HR(sort_index, input_ids, 20)
+            HR[0] += _calc_HitRatio(pred_sort, input_ids, 5)
+            HR[1] += _calc_HitRatio(pred_sort, input_ids, 10)
+            HR[2] += _calc_HitRatio(pred_sort, input_ids, 20)
 
         sort_lists = torch.cat(sort_lists, dim=0)
 

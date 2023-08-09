@@ -3,11 +3,14 @@ from torch import nn
 
 
 class PredictMetric(object):
-    def __call__(self, predicts, labels):
+    def __call__(self, predicts, labels, input_ids):
         predicts_sort = torch.argsort(predicts, dim=-1, descending=True)
         diff = predicts_sort - labels.reshape(-1, 1)
         sort_index = torch.argmax((diff == 0).type_as(diff), dim=-1)
-        return sort_index, predicts.shape[0]
+        predicts_sort = predicts_sort[0]
+        for i in range(predicts_sort.shape[0]):
+            predicts_sort[i] = input_ids[i,predicts_sort[i]]
+        return predicts_sort, sort_index, predicts.shape[0]
 
 
 class SequentialPredictMetric(object):
