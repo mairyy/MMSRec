@@ -77,9 +77,9 @@ class Evaluator(object):
             # print("batch", batch)
             sort_lists.append(sort_index)
             batch_size += batch
-            HR[0] += _calc_HitRatio(pred_sort, input_ids, 5)
-            HR[1] += _calc_HitRatio(pred_sort, input_ids, 10)
-            HR[2] += _calc_HitRatio(pred_sort, input_ids, 20)
+            HR[0] += _calc_HitRatio(sort_index, input_ids, 5)
+            HR[1] += _calc_HitRatio(sort_index, input_ids, 10)
+            HR[2] += _calc_HitRatio(sort_index, input_ids, 20)
 
         sort_lists = torch.cat(sort_lists, dim=0)
 
