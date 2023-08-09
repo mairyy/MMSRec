@@ -1,6 +1,5 @@
 import torch
 import wandb
-import numpy as np
 from tqdm import tqdm
 from utils.basic_utils import Logger
 from metric.predict_metric import PredictMetric
@@ -17,6 +16,18 @@ def _calc_NDCG(sort_lists, batch_size, topk=10):
     NDCG_result = torch.sum(NDCG_score) / batch_size
     return NDCG_result
 
+def _calc_HR(pred, seq, topk=10):
+    pred = pred[:topk]
+    hr = 0
+    HR_result = 0
+    for i in range(pred.shape[0]):
+        for idx in range(topk):
+            if pred[i, idx] in seq[i]:
+                hr += 1
+        HR_result += hr / seq[i].shape[0]
+        hr = 0
+    HR_result /= seq.shape[0]
+    return HR_result
 
 class Evaluator(object):
     def __init__(self,
@@ -46,33 +57,43 @@ class Evaluator(object):
         self.logger.info(f"***** Run eval *****")
         sort_lists = []
         batch_size = 0
+        HR = [0] * 3
 
         for step, data in tqdm(enumerate(self.eval_dataloader)):
             input_ids = data.to(self.device)
-            print("input", input_ids)
             pred, label = self.fusion_model(input_ids, mode="pred")
-            print("pred", pred)
-            print("label", label)
             sort_index, batch = self.metric(pred, label)
-            print("sort idx", sort_index)
-            print("batch", batch)
             sort_lists.append(sort_index)
             batch_size += batch
+            HR[0] += _calc_HR(pred, input_ids, 5)
+            HR[1] += _calc_HR(pred, input_ids, 10)
+            HR[2] += _calc_HR(pred, input_ids, 20)
 
         sort_lists = torch.cat(sort_lists, dim=0)
 
+        HR5 = HR[0] / batch_size
+        HR10 = HR[1] / batch_size
+        HR20 = HR[2] / batch_size
         Recall10 = _calc_Recall(sort_lists, batch_size, 10)
         Recall50 = _calc_Recall(sort_lists, batch_size, 50)
+        NDCG5 = _calc_NDCG(sort_lists, batch_size, 5)
         NDCG10 = _calc_NDCG(sort_lists, batch_size, 10)
+        NDCG20 = _calc_NDCG(sort_lists, batch_size, 20)
         NDCG50 = _calc_NDCG(sort_lists, batch_size, 50)
 
         if self.args.wandb_enable:
-            wandb.log({"eval/Recall@10": Recall10,
+            wandb.log({"eval/HR@5": HR5,
+                       "eval/HR@10": HR10,
+                       "eval/HR@20": HR20,
+                       "eval/Recall@10": Recall10,
                        "eval/Recall@50": Recall50,
+                       "eval/NDCG@5": NDCG5,
                        "eval/NDCG@10": NDCG10,
+                       "eval/NDCG@20": NDCG20,
                        "eval/NDCG@50": NDCG50,
                        "train/epoch": epoch})
-        self.logger.info(f"Epoch {epoch} Eval Result: R@10:{Recall10}, R@50:{Recall50}, NDCG@10:{NDCG10}, NDCG@50:{NDCG50}")
+        self.logger.info(f"Epoch {epoch} Eval Result: HR@5:{HR5}, HR@10:{HR10}, HR@20:{HR20}, R@10:{Recall10}\
+                         , R@50:{Recall50}, NDCG@5:{NDCG5}, NDCG@10:{NDCG10}, NDCG@20:{NDCG20}, NDCG@50:{NDCG50}")
 
         return Recall10
 
@@ -105,50 +126,4 @@ class Evaluator(object):
                        "test/NDCG@10": NDCG10,
                        "test/NDCG@50": NDCG50})
         self.logger.info(f"Test Result: R@10:{Recall10}, R@50:{Recall50}, NDCG@10:{NDCG10}, NDCG@50:{NDCG50}")
-
-    def calc_res(self, scores, tst_ids, pos_ids, seq_len):
-        group_h20 = [0] * 4
-        group_n20 = [0] * 4
-        group_num = [0] * 4
-        h5, n5, h10, n10, h20, n20, h50, n50 = [0] * 8
-        for i in range(len(pos_ids)):
-            ids_with_scores = list(zip(tst_ids[i], scores[i]))
-            ids_with_scores = sorted(ids_with_scores, key=lambda x: x[1], reverse=True)
-            if seq_len[i] < 5:
-                group_num[0] += 1
-            elif seq_len[i] >= 5 and seq_len[i] < 10:
-                group_num[1] += 1
-            elif seq_len[i] >= 10 and seq_len[i] < 20:
-                group_num[2] += 1
-            else:
-                group_num[3] += 1
-            shoot = list(map(lambda x: x[0], ids_with_scores[:5]))
-            if pos_ids[i] in shoot:
-                h5 += 1
-                n5 += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-            shoot = list(map(lambda x: x[0], ids_with_scores[:10]))
-            if pos_ids[i] in shoot:
-                h10 += 1
-                n10 += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-            shoot = list(map(lambda x: x[0], ids_with_scores[:20]))
-            if pos_ids[i] in shoot:
-                if seq_len[i] < 5:
-                    group_h20[0] += 1
-                    group_n20[0] += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-                elif seq_len[i] >= 5 and seq_len[i] < 10:
-                    group_h20[1] += 1
-                    group_n20[1] += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-                elif seq_len[i] >= 10 and seq_len[i] < 20:
-                    group_h20[2] += 1
-                    group_n20[2] += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-                else:
-                    group_h20[3] += 1
-                    group_n20[3] += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-                h20 += 1
-                n20 += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-            shoot = list(map(lambda x: x[0], ids_with_scores[:50]))
-            if pos_ids[i] in shoot:
-                h50 += 1
-                n50 += np.reciprocal(np.log2(shoot.index(pos_ids[i]) + 2))
-        return h5, n5, h10, n10, h20, n20, h50, n50, group_h20, group_n20, group_num
 
