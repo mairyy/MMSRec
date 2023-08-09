@@ -4,11 +4,14 @@ from tqdm import tqdm
 from utils.basic_utils import Logger
 from metric.predict_metric import PredictMetric
 
+def _calc_HitRatio(score, seq_lists, topk=10):
+    num_seq = score.shape[0]
+    id_score = map()
+    pred_indx = torch.argmax(score)
 
 def _calc_Recall(sort_lists, batch_size, topk=10):
     Recall_result = torch.sum(sort_lists < topk) / batch_size
     return Recall_result
-
 
 def _calc_NDCG(sort_lists, batch_size, topk=10):
     hit = sort_lists < topk
@@ -17,6 +20,7 @@ def _calc_NDCG(sort_lists, batch_size, topk=10):
     return NDCG_result
 
 def _calc_HR(pred, seq, topk=10):
+    print()
     pred = pred[:topk]
     hr = 0
     HR_result = 0
@@ -61,13 +65,18 @@ class Evaluator(object):
 
         for step, data in tqdm(enumerate(self.eval_dataloader)):
             input_ids = data.to(self.device)
+            print("len", input_ids.shape[0], "input", input_ids)
             pred, label = self.fusion_model(input_ids, mode="pred")
+            print("len", pred.shape[0], "pred", pred)
+            print("len", label.shape[0], "label", label)
             sort_index, batch = self.metric(pred, label)
+            print("len", sort_index.shape[0], "sort idx", sort_index)
+            print("batch", batch)
             sort_lists.append(sort_index)
             batch_size += batch
-            HR[0] += _calc_HR(pred, input_ids, 5)
-            HR[1] += _calc_HR(pred, input_ids, 10)
-            HR[2] += _calc_HR(pred, input_ids, 20)
+            HR[0] += _calc_HR(sort_index, input_ids, 5)
+            HR[1] += _calc_HR(sort_index, input_ids, 10)
+            HR[2] += _calc_HR(sort_index, input_ids, 20)
 
         sort_lists = torch.cat(sort_lists, dim=0)
 
