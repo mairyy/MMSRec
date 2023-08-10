@@ -5,11 +5,11 @@ from torch import nn
 class PredictMetric(object):
     def __call__(self, predicts, labels, input_ids):
         predicts_sort = torch.argsort(predicts, dim=-1, descending=True)
-        print("pred sort", predicts_sort)
+        # print("pred sort", predicts_sort)
         diff = predicts_sort - labels.reshape(-1, 1)
-        print("diff", diff)
+        # print("diff", diff)
         sort_index = torch.argmax((diff == 0).type_as(diff), dim=-1)
-        print(sort_index)
+        # print(sort_index)
         # for i in range(predicts_sort.shape[0]):
         #     predicts_sort[i] = input_ids[i, predicts_sort[i]]
         #     print(input_ids[i, predicts_sort[i]])
