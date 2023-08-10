@@ -9,6 +9,7 @@ class PredictMetric(object):
         diff = predicts_sort - labels.reshape(-1, 1)
         print("diff", diff)
         sort_index = torch.argmax((diff == 0).type_as(diff), dim=-1)
+        print(sort_index)
         predicts_sort = predicts_sort[0]
         print(predicts_sort.shape[0])
         # for i in range(predicts_sort.shape[0]):

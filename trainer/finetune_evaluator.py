@@ -87,6 +87,7 @@ class Evaluator(object):
         HR5 = HR[0] / batch_size
         HR10 = HR[1] / batch_size
         HR20 = HR[2] / batch_size
+        Recall5 = _calc_Recall(sort_lists, batch_size, 5)
         Recall10 = _calc_Recall(sort_lists, batch_size, 10)
         Recall50 = _calc_Recall(sort_lists, batch_size, 50)
         NDCG5 = _calc_NDCG(sort_lists, batch_size, 5)
@@ -98,6 +99,7 @@ class Evaluator(object):
             wandb.log({"eval/HR@5": HR5,
                        "eval/HR@10": HR10,
                        "eval/HR@20": HR20,
+                       "eval/Recall@5": Recall5,
                        "eval/Recall@10": Recall10,
                        "eval/Recall@50": Recall50,
                        "eval/NDCG@5": NDCG5,
@@ -105,7 +107,7 @@ class Evaluator(object):
                        "eval/NDCG@20": NDCG20,
                        "eval/NDCG@50": NDCG50,
                        "train/epoch": epoch})
-        self.logger.info(f"Epoch {epoch} Eval Result: HR@5:{HR5}, HR@10:{HR10}, HR@20:{HR20}, R@10:{Recall10}\
+        self.logger.info(f"Epoch {epoch} Eval Result: HR@5:{HR5}, HR@10:{HR10}, HR@20:{HR20}, R@5:{Recall5}, R@10:{Recall10}\
                          , R@50:{Recall50}, NDCG@5:{NDCG5}, NDCG@10:{NDCG10}, NDCG@20:{NDCG20}, NDCG@50:{NDCG50}")
 
         return Recall10
