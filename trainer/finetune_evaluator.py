@@ -8,6 +8,9 @@ def _calc_HitRatio(pred, label, topk=10):
     HR = 0
     num_item = label.shape[0]
     pred = pred[:topk]
+    print(pred.shape[0])
+    print("pred", pred)
+    print(label)
     for i in range(num_item):
         if label[i] in pred:
             HR += 1
