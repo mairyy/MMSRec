@@ -5,11 +5,13 @@ from utils.basic_utils import Logger
 from metric.predict_metric import PredictMetric
 
 def _calc_HitRatio(pred, label, topk=10):
+    HR = 0
     num_item = label.shape[0]
     pred = pred[:topk]
     for i in range(num_item):
         if label[i] in pred:
-            return 1
+            HR += 1
+    return HR
 
 def _calc_Recall(sort_lists, batch_size, topk=10):
     Recall_result = torch.sum(sort_lists < topk) / batch_size
