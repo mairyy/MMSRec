@@ -13,7 +13,9 @@ def _calc_HitRatio(pred, label, topk=10):
     print(label)
     for i in range(num_item):
         if label[i] in pred:
+            print(label[i])
             HR += 1
+    print(HR)
     return HR
 
 def _calc_Recall(sort_lists, batch_size, topk=10):
