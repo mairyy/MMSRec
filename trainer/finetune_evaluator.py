@@ -119,26 +119,47 @@ class Evaluator(object):
         self.logger.info(f"***** Run test *****")
         sort_lists = []
         batch_size = 0
+        HR = [0] * 3
 
-        for step, data in tqdm(enumerate(self.test_dataloader)):
+        for step, data in tqdm(enumerate(self.eval_dataloader)):
             input_ids = data.to(self.device)
+            # print("len", input_ids.shape[0], "input", input_ids)
             pred, label = self.fusion_model(input_ids, mode="pred")
-            sort_index, batch = self.metric(pred, label)
-
+            # print("len", pred.shape[0], "pred", pred)
+            # print("len", label.shape[0], "label", label)
+            pred_sort, sort_index, batch = self.metric(pred, label, input_ids)
+            # print("len", sort_index.shape[0], "sort idx", sort_index)
+            # print("batch", batch)
             sort_lists.append(sort_index)
             batch_size += batch
+            HR[0] += _calc_HitRatio(pred_sort, label, 5)
+            HR[1] += _calc_HitRatio(pred_sort, label, 10)
+            HR[2] += _calc_HitRatio(pred_sort, label, 20)
 
         sort_lists = torch.cat(sort_lists, dim=0)
 
+        HR5 = HR[0] / batch_size
+        HR10 = HR[1] / batch_size
+        HR20 = HR[2] / batch_size
+        Recall5 = _calc_Recall(sort_lists, batch_size, 5)
         Recall10 = _calc_Recall(sort_lists, batch_size, 10)
         Recall50 = _calc_Recall(sort_lists, batch_size, 50)
+        NDCG5 = _calc_NDCG(sort_lists, batch_size, 5)
         NDCG10 = _calc_NDCG(sort_lists, batch_size, 10)
+        NDCG20 = _calc_NDCG(sort_lists, batch_size, 20)
         NDCG50 = _calc_NDCG(sort_lists, batch_size, 50)
 
         if self.args.wandb_enable:
-            wandb.log({"test/Recall@10": Recall10,
+            wandb.log({"test/HR@5": HR5,
+                       "test/HR@10": HR10,
+                       "test/HR@20": HR20,
+                       "test/Recall@5": Recall5,
+                       "test/Recall@10": Recall10,
                        "test/Recall@50": Recall50,
+                       "test/NDCG@5": NDCG5,
                        "test/NDCG@10": NDCG10,
+                       "test/NDCG@20": NDCG20,
                        "test/NDCG@50": NDCG50})
-        self.logger.info(f"Test Result: R@10:{Recall10}, R@50:{Recall50}, NDCG@10:{NDCG10}, NDCG@50:{NDCG50}")
+        self.logger.info(f"Test Result: HR@5:{HR5}, HR@10:{HR10}, HR@20:{HR20}, R@5:{Recall5}, R@10:{Recall10}\
+                         , R@50:{Recall50}, NDCG@5:{NDCG5}, NDCG@10:{NDCG10}, NDCG@20:{NDCG20}, NDCG@50:{NDCG50}")
 
