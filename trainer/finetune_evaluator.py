@@ -7,12 +7,12 @@ from metric.predict_metric import PredictMetric
 def _calc_HitRatio(pred, label, topk=10):
     HR = 0
     num_item = label.shape[0]
-    pred = pred[:topk]
+    pred = pred[:, :topk]
     print(pred.shape[0])
     print("pred", pred)
     print(label)
     for i in range(num_item):
-        if label[i] in pred:
+        if label[i] in pred[i,:]:
             print(label[i])
             HR += 1
     print(HR)
