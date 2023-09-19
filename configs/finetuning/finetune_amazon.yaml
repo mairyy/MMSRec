@@ -9,10 +9,10 @@ display_name: ""
 num_worker: 8
 # - train
 train_item_file: "./dataset/amazon/processed/Sports/item_feature.jsonl"
-train_seq_file: "./dataset/amazon/processed/Sports/train_seq.jsonl"
+train_seq_file: "./dataset/amazon/processed/Sports/eval_seq.jsonl"
 # - eval
 eval_item_file: "./dataset/amazon/processed/Sports/item_feature.jsonl"
-eval_seq_file: "./dataset/amazon/processed/Sports/eval_seq.jsonl"
+eval_seq_file: "./dataset/amazon/processed/Sports/test_seq.jsonl"
 # - test
 test_item_file: "./dataset/amazon/processed/Sports/item_feature.jsonl"
 test_seq_file: "./dataset/amazon/processed/Sports/test_seq.jsonl"
