@@ -8,14 +8,14 @@ display_name: ""
 # - basic
 num_worker: 8
 # - train
-train_item_file: "./dataset/amazon/processed/Sports/item_feature.jsonl"
-train_seq_file: "./dataset/amazon/processed/Sports/eval_seq.jsonl"
+train_item_file: "./dataset/amazon/processed/Toys/item_feature.jsonl"
+train_seq_file: "./dataset/amazon/processed/Toys/eval_seq.jsonl"
 # - eval
-eval_item_file: "./dataset/amazon/processed/Sports/item_feature.jsonl"
-eval_seq_file: "./dataset/amazon/processed/Sports/test_seq.jsonl"
+eval_item_file: "./dataset/amazon/processed/Toys/item_feature.jsonl"
+eval_seq_file: "./dataset/amazon/processed/Toys/test_seq.jsonl"
 # - test
-test_item_file: "./dataset/amazon/processed/Sports/item_feature.jsonl"
-test_seq_file: "./dataset/amazon/processed/Sports/test_seq.jsonl"
+test_item_file: "./dataset/amazon/processed/Toys/item_feature.jsonl"
+test_seq_file: "./dataset/amazon/processed/Toys/test_seq.jsonl"
 # - seq
 max_seq_length: 20
 # - vision    ["mp4", "embed", ~]
@@ -63,7 +63,7 @@ ce_mask_ratio: 0.2
 # - eval
 early_stopping: 10
 # - save
-model_save_path: "./weights/finetune-Sports-8192batch"
+model_save_path: "./weights/finetune-Toys-8192batch"
 model_resume_path: "./weights/pretrain-webvid-2layer-512dim"          # ["path/to/checkpoint", ~]
 
 
